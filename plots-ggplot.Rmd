@@ -5,4 +5,35 @@ date: "2023-04-09"
 output: html_document
 ---
 
-# Plots with ggplot2
+# Library
+```{r Setup, include = FALSE}
+
+library(tidyverse) 
+library(readxl)
+library(here)
+ca_np<-read_csv(here("data", "ca_np.csv"))
+ci_np<-read_excel(here("data", "ci_np.xlsx"))
+```
+
+```{r Plot, echo = FALSE}
+gg_base<-ggplot(data = ci_np, aes(x = year, y = visitors))
+
+gg_base +
+  geom_line(color = "purple") +
+  geom_point(color = "orange",
+             aes(size = year),
+             alpha = 0.5) +
+  labs(x = "year", 
+       y = "annual visitors",
+       title = "Channel Islands NP Visitation")
+
+
+gg_np <- ggplot(data = ca_np, aes(x = year, y = visitors, group = park_name))
+
+gg_np +
+  geom_line(show.legend = FALSE) +
+  theme_light() + 
+  labs(x = "year", y = "annual visitors") +
+  facet_wrap(~ park_name)
+
+```
